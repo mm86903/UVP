@@ -52,3 +52,4 @@ def razclenjevanje_html(vrstice):
                 data["typeset"] = celica.text.split(":")[1].strip()
             
     return data
+
