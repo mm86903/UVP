@@ -1,17 +1,11 @@
 import os                                
 from bs4 import BeautifulSoup            #za razčlenjevanje html
 import requests                          #za vsebino html
-
-
-url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2247"
-page = requests.get(url)   #dobimo izvrono kodo
-soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
+import csv
 
 
 
-#Vsi podatki o določeni skladbi:
-vsi_podatki = soup.find("table", {"class":"table table-bordered result-table"})            #tabela podatkov
-vrstice = vsi_podatki.find_all("tr")                                                       #Vse vrstice v tabeli
+
 
 
 def razclenjevanje_html(vrstice):
@@ -53,3 +47,32 @@ def razclenjevanje_html(vrstice):
             
     return data
 
+
+
+def sparsa_skladbo(url, writer):
+    page = requests.get(url)   #dobimo izvrono kodo
+    soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
+
+    #Vsi podatki o določeni skladbi:
+    vsi_podatki = soup.find("table", {"class":"table table-bordered result-table"})            #tabela podatkov
+    vrstice = vsi_podatki.find_all("tr")                                                       #Vse vrstice v tabeli
+
+    slovar = razclenjevanje_html(vrstice)
+    ime_skladbe = "not_found"
+    
+    writer.writerow([ime_skladbe, slovar["instrumenti"], slovar["stil"], slovar["opus"], slovar["datum_kompozicije"], slovar["vir"], slovar["avtorske_pravice"], slovar["zadnja_posodobitev"], slovar["glasbeni_ID"], slovar["typeset"]])
+ 
+ 
+def main():
+    file = open("Podatki.csv", "w", encoding="utf-8")
+    writer = csv.writer(file)
+    writer.writerow(["IME_SKLADBE","Instrumenti", "Stil", "Opus", "Datum kompozicije", "Vir", "Avtorske pravice", "Zadnja posodobitev", "Glasbeni ID", "Typeset"])
+    #url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2247"
+    
+    #sparsa_skladbo(url, writer)
+    #url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=439"
+    #sparsa_skladbo(url, writer)
+    
+    glavni_url = "https://www.mutopiaproject.org/cgibin/make-table.cgi?Instrument=Piano"
+    
+main()
