@@ -1,3 +1,11 @@
-IME_SKLADBE,Instrumenti,Stil,Opus,Datum kompozicije,Vir,Avtorske pravice,Zadnja posodobitev,Glasbeni ID,Typeset
+IME SKLADBE,Instrumenti,Stil,Opus,Datum kompozicije,Vir,Avtorske pravice,Zadnja posodobitev,Glasbeni ID,Typeset
 not_found,"Voice, Piano",Romantic,Not known,Not known,"Practical Singing Tutor for All Voices, G.Schirmer, 1892. Ed",Public Domain,2019/Jul/24,Mutopia-2019/07/24-2247,"LilyPond, version 2.18.2"
 not_found,Voice and Piano,Song,,c. 1846,Not known,Public Domain,2014/Nov/13,Mutopia-2014/11/13-439,"LilyPond, version 2.18.2"
+not_found,Piano,Classical,Not known,Not known,New arrangement,Public Domain,2006/Dec/22,Mutopia-2006/12/22-897,"LilyPond, version 2.10.4"
+not_found,Voice and Piano,Hymn,Not known,Not known,Ed. LÃ©on Grus,Public Domain,2005/Dec/09,Mutopia-2005/12/09-640,"LilyPond, version 2.6.5"
+not_found,Voice and Piano,Song,Not known,Not known,Not known,Public Domain,2014/Nov/13,Mutopia-2014/11/13-440,"LilyPond, version 2.18.2"
+not_found,Piano,Romantic,71,1887,Union Musical EspaÃ±ola,Public Domain,2006/Dec/29,Mutopia-2006/12/29-898,"LilyPond, version 2.10.4"
+not_found,"Piano, Orgue",Romantic,"op. 31,1",1846,"Schlesinger, Berlin, 1887 [Nachdruck Brandus, 1847]",Creative Commons Attribution-ShareAlike 3.0,2009/Dec/15,Mutopia-2009/12/15-1731,"LilyPond, version 2.12.2"
+not_found,"Piano, Orgue",Romantic,"op. 31,2",1846,"Schlesinger, Berlin, 1887 [Nachdruck Brandus, 1847]",Creative Commons Attribution-ShareAlike 3.0,2010/Feb/08,Mutopia-2010/02/08-1742,"LilyPond, version 2.12.2"
+not_found,Piano,Romantic,Op.75,1872,Paris,Creative Commons Attribution-ShareAlike 4.0,2017/Jan/17,Mutopia-2017/01/17-2163,"LilyPond, version 2.18.2"
+not_found,Piano,Classical,"Opus 34. I., Meter",18th Century,"Unknown, late 19th Century",Public Domain,2013/Jan/06,Mutopia-2013/01/06-207,"LilyPond, version 2.16.1"

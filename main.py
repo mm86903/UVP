@@ -53,7 +53,7 @@ def sparsa_skladbo(url, writer):
     page = requests.get(url)   #dobimo izvrono kodo
     soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
 
-    #Vsi podatki o določeni skladbi:
+    #Vsi podatki o določeni skladbi, pod zavihkom More information             DODAJ SE IMEEEEEEEE SKLADBEEE TUKII:
     vsi_podatki = soup.find("table", {"class":"table table-bordered result-table"})            #tabela podatkov
     vrstice = vsi_podatki.find_all("tr")                                                       #Vse vrstice v tabeli
 
@@ -63,16 +63,54 @@ def sparsa_skladbo(url, writer):
     writer.writerow([ime_skladbe, slovar["instrumenti"], slovar["stil"], slovar["opus"], slovar["datum_kompozicije"], slovar["vir"], slovar["avtorske_pravice"], slovar["zadnja_posodobitev"], slovar["glasbeni_ID"], slovar["typeset"]])
  
  
+
+ 
+def pridobi_URLje(glavni_url):
+    """Iz glavne strani pridobi vse URL-je, kjer pise More information"""
+    page = requests.get(glavni_url)   #dobimo izvrono kodo
+    soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
+
+    url_ji = []
+    
+    #Iščemo vzorec: <a href="piece-info.cgi?id=439">More Information</a>  ---> spreminja se samo stevilka na koncu id= ?????
+    #Poiščemo vse tabele z razredom "table-bordered"
+    tabele = soup.find_all("table", {"class": "table-bordered result-table"})
+    for tabelca in tabele:
+        vrstice = tabelca.find_all("tr")
+        
+        for vrstica in vrstice:
+            #Poiscemo vse povezave v vrstici
+            povezave = vrstica.find_all("a", href=True)
+            
+            for povezava in povezave:
+                if "More Information" in povezava.text:
+                    celoten_url = "https://www.mutopiaproject.org/cgibin/" + povezava["href"]
+                    url_ji.append(celoten_url)
+       
+    return url_ji
+        
+ 
 def main():
     file = open("Podatki.csv", "w", encoding="utf-8")
     writer = csv.writer(file)
-    writer.writerow(["IME_SKLADBE","Instrumenti", "Stil", "Opus", "Datum kompozicije", "Vir", "Avtorske pravice", "Zadnja posodobitev", "Glasbeni ID", "Typeset"])
+    writer.writerow(["IME SKLADBE","Instrumenti", "Stil", "Opus", "Datum kompozicije", "Vir", "Avtorske pravice", "Zadnja posodobitev", "Glasbeni ID", "Typeset"])
+    
+    #Primer za dva url-ja, rabimo pa za vse
     #url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2247"
-    
     #sparsa_skladbo(url, writer)
-    #url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=439"
+    #url = "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=207"
     #sparsa_skladbo(url, writer)
     
-    glavni_url = "https://www.mutopiaproject.org/cgibin/make-table.cgi?Instrument=Piano"
+    
+    glavni_url = "https://www.mutopiaproject.org/cgibin/make-table.cgi?Instrument=Piano"   #tabele vseh tabel
+    for url in pridobi_URLje(glavni_url):
+        sparsa_skladbo(url, writer)
+        
     
 main()
+
+
+
+
+
+
