@@ -9,7 +9,7 @@ import csv
 
 
 def razclenjevanje_html(vrstice):
-    """Obdelava html vrstic in pridobitev podatkov"""
+    """Obdelava html vrstic in pridobitev podatkov iz tabelce"""
     data = {
         "instrumenti" : None,
         "stil" : None,
@@ -50,6 +50,8 @@ def razclenjevanje_html(vrstice):
 
 
 def sparsa_skladbo(url, writer):
+    """Dobimo vse podatke o posamezni tabelci + ime datoteke ter jih nato zapišemo v csv daatoteko"""
+    
     page = requests.get(url)   #dobimo izvrono kodo
     soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
 
@@ -66,27 +68,41 @@ def sparsa_skladbo(url, writer):
 
  
 def pridobi_URLje(glavni_url):
-    """Iz glavne strani pridobi vse URL-je, kjer pise More information"""
+    """Iz glavne strani pridobi vse URL-je, kjer pise More Information,
+    OPOZORILO!!!!!: lahko traja nekaj casa, preden najde vse URLje"""
     page = requests.get(glavni_url)   #dobimo izvrono kodo
     soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
 
     url_ji = []
     
+
     #Iščemo vzorec: <a href="piece-info.cgi?id=439">More Information</a>  ---> spreminja se samo stevilka na koncu id= ?????
     #Poiščemo vse tabele z razredom "table-bordered"
-    tabele = soup.find_all("table", {"class": "table-bordered result-table"})
-    for tabelca in tabele:
-        vrstice = tabelca.find_all("tr")
+    while True:
+        tabele = soup.find_all("table", {"class": "table-bordered result-table"})
         
-        for vrstica in vrstice:
-            #Poiscemo vse povezave v vrstici
-            povezave = vrstica.find_all("a", href=True)
+        for tabelca in tabele:
+            vrstice = tabelca.find_all("tr")
             
-            for povezava in povezave:
-                if "More Information" in povezava.text:
-                    celoten_url = "https://www.mutopiaproject.org/cgibin/" + povezava["href"]
-                    url_ji.append(celoten_url)
-       
+            for vrstica in vrstice:
+                #Poiscemo vse povezave v vrstici
+                povezave = vrstica.find_all("a", href=True)
+                
+                for povezava in povezave:
+                    if "More Information" in povezava.text:
+                        celoten_url = "https://www.mutopiaproject.org/cgibin/" + povezava["href"]
+                        url_ji.append(celoten_url)
+
+        # Poiščemo povezavo za naslednjih 10 skladb
+        naslednja_povezava = soup.find("a", string="Next 10")
+        if not naslednja_povezava:
+            break  # ce ni vec "Next 10", koncamo z iskanjem
+            
+        # Posodobimo URL za naslednjih 10 skladb in ponovno nalozimo stran
+        naslednji_url = "https://www.mutopiaproject.org/cgibin/" + naslednja_povezava["href"]
+        page = requests.get(naslednji_url)
+        soup = BeautifulSoup(page.text, "html.parser")
+
     return url_ji
         
  
