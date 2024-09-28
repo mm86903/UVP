@@ -1,10 +1,7 @@
-import os                                
+                           
 from bs4 import BeautifulSoup            #za razčlenjevanje html
 import requests                          #za vsebino html
 import csv
-
-
-
 
 
 
@@ -53,14 +50,17 @@ def sparsa_skladbo(url, writer):
     """Dobimo vse podatke o posamezni tabelci + ime datoteke ter jih nato zapišemo v csv daatoteko"""
     
     page = requests.get(url)   #dobimo izvrono kodo
+    page.encoding = "utf-8"
     soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
 
-    #Vsi podatki o določeni skladbi, pod zavihkom More information             DODAJ SE IMEEEEEEEE SKLADBEEE TUKII:
+
+    #Podatki o določeni skladbi, pod zavihkom More information    
+    ime_skladbe = soup.find("h2").text.strip() if soup.find("h2") else "Ime neznano"
+    
     vsi_podatki = soup.find("table", {"class":"table table-bordered result-table"})            #tabela podatkov
     vrstice = vsi_podatki.find_all("tr")                                                       #Vse vrstice v tabeli
 
     slovar = razclenjevanje_html(vrstice)
-    ime_skladbe = "not_found"
     
     writer.writerow([ime_skladbe, slovar["instrumenti"], slovar["stil"], slovar["opus"], slovar["datum_kompozicije"], slovar["vir"], slovar["avtorske_pravice"], slovar["zadnja_posodobitev"], slovar["glasbeni_ID"], slovar["typeset"]])
  
@@ -71,13 +71,13 @@ def pridobi_URLje(glavni_url):
     """Iz glavne strani pridobi vse URL-je, kjer pise More Information,
     OPOZORILO!!!!!: lahko traja nekaj casa, preden najde vse URLje"""
     page = requests.get(glavni_url)   #dobimo izvrono kodo
+    page.encoding = "utf-8"
     soup = BeautifulSoup(page.text, "html.parser")            #Naredimo beautifulsoup objekt
 
     url_ji = []
     
-
-    #Iščemo vzorec: <a href="piece-info.cgi?id=439">More Information</a>  ---> spreminja se samo stevilka na koncu id= ?????
-    #Poiščemo vse tabele z razredom "table-bordered"
+    #Iscemo vzorec: <a href="piece-info.cgi?id=439">More Information</a>  ---> spreminja se samo stevilka na koncu id= ?????
+    #Poiscemo vse tabele z razredom "table-bordered"
     while True:
         tabele = soup.find_all("table", {"class": "table-bordered result-table"})
         
@@ -106,8 +106,10 @@ def pridobi_URLje(glavni_url):
     return url_ji
         
  
-def main():
-    file = open("Podatki.csv", "w", encoding="utf-8")
+ 
+ 
+def main(): 
+    file = open("Podatki.csv", "w", newline="", encoding="utf-8")
     writer = csv.writer(file)
     writer.writerow(["IME SKLADBE","Instrumenti", "Stil", "Opus", "Datum kompozicije", "Vir", "Avtorske pravice", "Zadnja posodobitev", "Glasbeni ID", "Typeset"])
     
