@@ -9,8 +9,8 @@ Pridobila sem torej vse možne podatke o vsaki skladbi, ki je bila podana.
 Za delovanje programa naj ima uporabnik naložene naslednje knjižnice: Beautifulsoup, IPython.display in langdetect. Naložene pa naj ima tudi pakete pandas, matplotlib.pyplot, requests in csv.
 
 ## Opis
-V main.py se nahajajo vse potrebne funkcije za nadaljno analiziranje podatkov, torej pridobivanje url-jev, zapisovanje vcsv datoteko in ostale funkcije (podrobno o namenu posamezne funkcije piše v sami main.py datoteki).
+V main.py se nahajajo vse potrebne funkcije za nadaljno analiziranje podatkov, torej pridobivanje url-jev, zapisovanje v csv datoteko in ostale funkcije (podrobno o namenu posamezne funkcije piše v sami main.py datoteki).
 
 ## Opozorilo
-Funkcija def main() lahko potrebuje nekaj časa preden zapiše v csv datoteko.
+Funkcija main() lahko potrebuje nekaj časa preden zapiše v csv datoteko.
 
